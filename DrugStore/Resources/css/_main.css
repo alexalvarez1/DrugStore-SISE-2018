@@ -1,0 +1,375 @@
+body{padding: 0px;margin: 0px;-webkit-box-sizing: border-box;box-sizing: border-box;} 
+::-webkit-scrollbar{
+    width: 8px;
+    height: 8px;
+}
+::-webkit-scrollbar-thumb{    
+    border-radius: 10px;
+    -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,.3);
+    background-image: -webkit-gradient(linear, left top, right bottom, color-stop(20%, #b5b5e8) , color-stop(80%, #9be4fb));
+    background-image: -webkit-linear-gradient(top left, #b5b5e8 20% , #9be4fb 80%);
+    background-image: linear-gradient(to bottom right, #b5b5e8 20% , #9be4fb 80%);
+}
+
+/*EN ESPERA*/
+.espera-pop-up{
+    width: 100%;
+    top: 50%;
+    left: 50%;
+    -webkit-transform: translate(-50%, -50%);
+    -ms-transform: translate(-50%, -50%);
+    transform: translate(-50%, -50%);
+    position: fixed;
+    font-weight: 900;
+    font-size: 2rem;
+    text-align: center;
+    color: #84CEC7;
+    z-index: 9999;    
+}
+.espera-pop-up p{
+    color: #FFC83D;
+    text-shadow: #FFC83D 0 0 5px;
+    letter-spacing: 2px;
+    font-size: 32px;
+}
+@media (max-width: 530px){
+    .espera-pop-up p{
+        font-size: 22px;
+    }
+}
+@media (max-height: 180px){
+    .espera-pop-up{
+        top: 50px;        
+        -webkit-transform: translate(-50%);        
+        -ms-transform: translate(-50%);        
+        transform: translate(-50%);       
+        font-size: 25px;
+    }
+}
+.pop-up{
+    position: fixed;
+    width: 100vw;
+    height: 100vh;
+    background-color: rgba(0,0,0,.5);
+    top: 0;
+    left: 0;
+    z-index: 9998;
+}
+
+/*Tabla*/
+.tabla-contenedor{
+    width: 100%;
+    overflow: scroll;
+    padding: 20px;
+}
+.tabla {
+    font-family: 'Slabo 27px', serif; /*TEMPORAL*/
+    background-color: white;
+    margin: 5px auto;
+    border-collapse: collapse;
+    border-radius: 7px;
+    cursor: default;
+    -webkit-box-shadow: #efe4e6 0 0 5px;
+    box-shadow: #efe4e6 0 0 5px;
+    width: 100%;
+}
+.tabla tr:first-child th{
+    padding: 10px;
+    letter-spacing: 1px;
+    font-weight: 100;
+    font-size: 14px;
+    background-image: -webkit-gradient(linear, left top, right bottom, color-stop(50%, #33b8b2), color-stop(50%, #33b8b2));
+    background-image: -webkit-linear-gradient(top left, #33b8b2 50%, #33b8b2 50%);
+    background-image: -o-linear-gradient(top left, #33b8b2 50%, #33b8b2 50%);
+    background-image: linear-gradient(to bottom right, #33b8b2 50%, #33b8b2 50%);
+    color: #efe4e6; 
+
+}
+.tabla tr:first-child th:first-child{
+    border-top-left-radius: 7px;
+}
+.tabla tr:first-child th:last-child{
+    border-top-right-radius: 7px;
+}
+.tabla tr:first-child:not(:last-child){
+    -webkit-box-shadow: #8ebab8 0 2px 4px ;
+    box-shadow: #8ebab8 0 2px 4px ;
+}
+.tabla tr:not(:first-child) td{    
+    color: rgb(40, 40, 40);
+    letter-spacing: 1px;
+    padding: 8px;
+    font-size: 14px;
+}
+.tabla tr:not(:first-child) td:last-child span{    
+    display: -webkit-box;    
+    display: -ms-flexbox;    
+    display: flex;    
+    -ms-flex-pack: distribute;    
+    justify-content: space-around;
+}
+
+.tabla tr:not(:first-child) td:last-child  a{
+    position: relative;
+    font-size: 25px;
+}
+
+.tabla tr:not(:first-child) td:last-child  a:hover{
+    /*font-size: 26px;*/
+    /*text-shadow: #30a5ff 0 0 3px;*/
+}
+
+.tabla tr:not(:first-child) td:last-child  a::after{
+    position: absolute;
+    content: attr(data-tooltip);
+    font-size: 12px;
+    border: 1px solid #fc0;
+    padding: 1px 4px;
+    background: #fffea1;
+    top: 30px;
+    left: 100%; 
+    -webkit-transform: translate(-100%); 
+    -ms-transform: translate(-100%); 
+    transform: translate(-100%);
+    border-radius: 5px;
+    -webkit-box-shadow: #fc0 0 0 2px;
+    box-shadow: #fc0 0 0 2px;
+    max-width: 0;
+    -webkit-transition: all .1s linear;
+    -o-transition: all .1s linear;
+    transition: all .1s linear;
+    z-index: -1;
+    overflow: hidden;
+}
+
+.tabla tr:not(:first-child) td:last-child  a:hover:after{    
+    max-width: 1000%;    
+    z-index: 1;   
+}
+
+.tabla tfoot tr:last-child > *:first-child{    
+    text-align: center;
+    border-bottom-left-radius: 7px;
+    border-bottom-right-radius: 7px;
+}
+.tabla tfoot tr ul{
+    margin: 0;padding: 0;
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-pack: center;
+    -ms-flex-pack: center;
+    justify-content: center;
+    -webkit-box-align: center;
+    -ms-flex-align: center;
+    align-items: center;
+}
+.tabla tfoot tr ul li{
+    list-style: none;   
+}
+.tabla tfoot tr ul li span{
+    margin: 0 1px;
+    display: block;
+    color: #efe4e6;
+    -webkit-transition: all .2s linear;
+    -o-transition: all .2s linear;
+    transition: all .2s linear;
+    cursor: pointer;
+    width: 20px;
+    height: 20px;
+}
+.tabla tfoot tr ul li:not(:first-child):not(:last-child) span{
+    -webkit-box-sizing: initial;
+    box-sizing: initial;
+    padding: 1px;
+    border-radius: calc(50%);    
+    background-image: -webkit-gradient(linear, left top, right bottom, color-stop(50%, #33b8b2), color-stop(50%, #33b8b2));    
+    background-image: -webkit-linear-gradient(top left, #33b8b2 50%, #33b8b2 50%);    
+    background-image: -o-linear-gradient(top left, #33b8b2 50%, #33b8b2 50%);    
+    background-image: linear-gradient(to bottom right, #33b8b2 50%, #33b8b2 50%);
+    -webkit-box-shadow: #479b28 0 0 5px;
+    box-shadow: #479b28 0 0 5px; 
+}
+.tabla tfoot tr ul li:not(:first-child):not(:last-child) span:hover{
+    -webkit-box-shadow: #33b8b2 0 0 30px;
+    box-shadow: #33b8b2 0 0 30px;
+    padding: 5px;
+}
+.tabla tfoot tr ul li:first-child span,
+.tabla tfoot tr ul li:last-child span
+{ 
+    color: #33b8b2;    
+}
+.tabla tfoot tr ul li:first-child span:hover,
+.tabla tfoot tr ul li:last-child span:hover
+{
+    padding: 5px;
+    color: #3ac7c1;  
+    text-shadow: #3ac7c1 0 0 2px;    
+}
+.tabla tfoot tr ul li:not(:first-child):not(:last-child) .indice-paginacion{
+    border-bottom: #0D48FF 2px double;
+    padding: 5px
+}
+.tabla tfoot tr ul li:not(:first-child):not(:last-child) .indice-paginacion:hover{
+    -webkit-box-shadow: #479b28 0 0 50px;
+    box-shadow: #479b28 0 0 50px;
+}
+
+.tooltip > .tooltip-inner{        
+    background-image: -webkit-gradient(linear, left top, right bottom, color-stop(20%, #b5b5e8), color-stop(97%, #9be4fb));        
+    background-image: -webkit-linear-gradient(top left, #b5b5e8 20%, #9be4fb 97%);        
+    background-image: -o-linear-gradient(top left, #b5b5e8 20%, #9be4fb 97%);        
+    background-image: linear-gradient(to bottom right, #b5b5e8 20%, #9be4fb 97%);
+    border-radius: 5px;
+    font-size: 12px;
+    letter-spacing: 1px;
+}
+
+
+
+.ropa-top{
+    position: relative;
+    width: 90%;
+    margin: 0 auto;
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -ms-flex-pack: distribute;
+    justify-content: space-around;
+    -ms-flex-wrap: wrap;
+    flex-wrap: wrap;
+
+}
+.contenido-venta{
+    -ms-flex-negative: 0;
+    flex-shrink: 0;
+    min-width: 220px;
+    width: 25%;
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-orient: vertical;
+    -webkit-box-direction: normal;
+    -ms-flex-direction: column;
+    flex-direction: column;
+    margin: 20px;    
+}
+.venta-configurar{
+    text-align: center;
+    position: relative;
+    width: 80%;
+    margin: auto;
+}
+.contenido-venta .venta-editar{
+    position: absolute;
+    font-size: 30px;
+    -webkit-transition: all .3s linear;
+    -o-transition: all .3s linear;
+    transition: all .3s linear;        
+}
+.venta-configurar .venta-editar{right: 25%;top: 50%;-webkit-transform: translateY(-50%);-ms-transform: translateY(-50%);transform: translateY(-50%) }
+.venta-configurar:hover .venta-editar{right: 2px;top: 0;-webkit-transform: translateY(0%);-ms-transform: translateY(0%);transform: translateY(0%)}
+
+.contenido-venta img{
+    margin: auto;
+    padding: 10px;
+    width: 100%;
+    border-radius: 10px;
+    border: 1px #ccc dashed;
+    cursor: copy;
+    margin-bottom: 5px;
+}
+.venta-descripcion{
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-orient: vertical;
+    -webkit-box-direction: normal;
+    -ms-flex-direction: column;
+    flex-direction: column;
+    text-align: center;
+    margin-bottom: 5px;
+}
+.venta-descripcion p:first-child{
+    font-weight: normal;
+    font-size: 20px;;
+    letter-spacing: 1px;
+}
+
+.venta-descripcion p{
+    margin: 0;
+    font-size: 12px;
+    font-weight: lighter;
+}
+
+.venta-importe-precio{
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-orient: horizontal;
+    -webkit-box-direction: normal;
+    -ms-flex-direction: row;
+    flex-direction: row;
+    -webkit-box-pack: space-around;
+    -ms-flex-pack: space-around;
+    justify-content: space-around;
+    margin-bottom: 5px;
+}
+.venta-importe-precio div{
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-orient: vertical;    
+    -webkit-box-direction: normal;    
+    -ms-flex-direction: column;    
+    flex-direction: column;
+}
+
+.venta-importe-precio div p{
+    margin: 0;
+    -ms-flex-item-align: center;
+    -ms-grid-row-align: center;
+    align-self: center
+}
+.venta-importe-precio div p:first-child{
+    font-size: 13px;
+}
+.venta-importe-precio div:first-child p:nth-child(2n){
+    font-size: 16px;
+    font-weight: 700; 
+}
+.venta-importe-precio div:nth-child(2n) p{
+    -ms-flex-item-align: end;
+    align-self: flex-end;
+}
+.venta-añadir-carrito{
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-pack: justify;
+    -ms-flex-pack: justify;
+    justify-content: space-between;
+}
+.venta-añadir-carrito div *{
+    margin: 0;
+}
+.venta-añadir-carrito div {
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    text-align: center;
+    font-size: 16px; 
+    -webkit-box-align: center; 
+    -ms-flex-align: center; 
+    align-items: center;
+    justify-content: space-around;
+    width: 50%;;
+}
+.venta-añadir-carrito a{
+    color: #30a5ff;
+    font-size: 28px;
+}
+.venta-añadir-carrito div:nth-child(2) a{ 
+    font-size: 14px;
+}
