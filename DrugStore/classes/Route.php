@@ -41,6 +41,15 @@ class Route {
             case "CerrarSesion":
                 self::CerrarSesion();
                 break;
+            case "MiInformacionView":
+                self::MiInformacionView();
+                break;
+            case "CambiarMiClaveView":
+                self::CambiarMiClaveView();
+                break;
+            case "CambiarMiClave":
+                self::CambiarMiClave();
+                break;
             case "OrdenPedidoView":
                 self::OrdenPedidoView();
                 break;
@@ -134,17 +143,34 @@ class Route {
         echo "Se ha cerrado todas las sesiones disponibles.";
     }
 
+    private function MiInformacionView() {
+        session_start();
+        $cod_empleado = $_SESSION["cod_empleado"];
+        $obj = EmpleadoController::BUSCAR_EMPLEADO($cod_empleado, "return");
+        require_once './App/Views/Dashboard/Empleado/modal/informacion.php';
+    }
+
+    private function CambiarMiClaveView() {
+        require_once './App/Views/Dashboard/Empleado/modal/cambiarclave.php';
+    }
+
+    private function CambiarMiClave() {
+        $clave = filter_input(INPUT_POST, "clave");
+        $nueva_clave = filter_input(INPUT_POST, "nueva_clave");
+        EmpleadoController::CAMBIAR_CLAVE($clave, $nueva_clave);
+    }
+
     // OrdenPedido by cod_lista_pedido
     private static function OrdenPedidoView() {
         require_once './App/Views/Dashboard/PuntoVenta/modal/ordenPedido.php';
     }
 
     // Tipo de pago
-    
+
     private static function CarteleraTipoPedido() {
         require_once './App/Views/Dashboard/TipoPago/modal/cartelera.php';
     }
-    
+
     // métodos para CLIENTE
     private static function NuevoCliente() {
         $cliente = new Cliente();
@@ -259,6 +285,7 @@ class Route {
         $producto->setNombre_producto(filter_input(INPUT_POST, "nombre_producto"));
         $producto->setDescripcion(filter_input(INPUT_POST, "descripcion"));
         $producto->setStock(filter_input(INPUT_POST, "stock"));
+        $producto->setPrecio(filter_input(INPUT_POST, "precio"));
         $producto->setFecha_vencimiento(filter_input(INPUT_POST, "fecha_vencimiento"));
         $producto->setRutaImagen("producto-" . $nombre_azar . "." . $extension);
         $producto->setCod_proveedor(filter_input(INPUT_POST, "cod_proveedor"));
@@ -291,18 +318,19 @@ class Route {
         $producto->setNombre_producto(filter_input(INPUT_POST, "nombre_producto"));
         $producto->setDescripcion(filter_input(INPUT_POST, "descripcion"));
         $producto->setStock(filter_input(INPUT_POST, "stock"));
+        $producto->setPrecio(filter_input(INPUT_POST, "precio"));
         $producto->setFecha_vencimiento(filter_input(INPUT_POST, "fecha_vencimiento"));
         $producto->setRutaImagen("producto-" . $nombre_azar . $extension);
         $producto->setCod_proveedor(filter_input(INPUT_POST, "cod_proveedor"));
 
-        
-        $obj = ProductoController::BUSCAR_PRODUCTO($producto->getCod_producto(), "return");       
-        
-        $msg = trim(ProductoController::EDITAR_PRODUCTO($producto));                
+
+        $obj = ProductoController::BUSCAR_PRODUCTO($producto->getCod_producto(), "return");
+
+        $msg = trim(ProductoController::EDITAR_PRODUCTO($producto));
 
         if ($msg == "Registro editado con exito.") {
             @unlink("./Resources/img/productos/" . $obj->rutaImagen);
-            
+
             move_uploaded_file($_FILES["rutaImagen"]["tmp_name"], "./Resources/img/productos/" . $producto->getRutaImagen());
         }
 

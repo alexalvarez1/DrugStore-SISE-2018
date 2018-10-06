@@ -2,10 +2,33 @@
 -- create database farmacia;
 -- use farmacia;
 
+drop procedure CANT_VENTAS;
+
+drop procedure if exists LISTA_TIPO_PAGO;
+
+drop procedure if exists FILTRAR_PRODUCTOS;
+drop procedure if exists EDITAR_PRODUCTO;
+drop procedure if exists BUSCAR_PRODUCTO;
+drop procedure if exists LISTAR_PRODUCTOS;
+drop procedure if exists CREAR_PRODUCTO;
+
+drop procedure if exists FILTRAR_PROVEEDORES;
+drop procedure if exists EDITAR_PROVEEDOR;
+drop procedure if exists BUSCAR_PROVEEDOR;
+drop procedure if exists LISTAR_PROVEEDORES;
+drop procedure if exists CREAR_PROVEEDOR; 
+
+drop procedure if exists FILTRAR_EMPLEADOS;
+drop procedure if exists EDITAR_EMPLEADO; 
+drop procedure if exists BUSCAR_EMPLEADO; 
+drop procedure if exists LISTAR_EMPLEADOS; 
+drop procedure if exists CREAR_EMPLEADO;
+
 drop procedure if exists CREAR_CLIENTE;
 drop procedure if exists LISTAR_CLIENTES;
 drop procedure if exists BUSCAR_CLIENTE;
 drop procedure if exists EDITAR_CLIENTE;
+drop procedure if exists FILTRAR_CLIENTES;
 
 drop procedure if exists CAMBIAR_CLAVE;
 drop procedure if exists INICIAR_SESION;
@@ -88,6 +111,7 @@ create table producto
     nombre_producto varchar(50),
     descripcion varchar(300),
     stock int default 100,
+    precio decimal(8,2),
     fecha_entrada datetime default now(),
     fecha_vencimiento datetime,
     estado bit default 1,
@@ -166,7 +190,6 @@ begin
     end if;  
 end;
 //
-
 
 -- PROCEDIMIENOS PARA CLIENTE
 drop procedure if exists CREAR_CLIENTE;
@@ -280,7 +303,7 @@ begin
     from empleado order by cod_empleado desc;
 end;
 //
-drop procedure if exists BUSCAR_EMPLEADO;
+drop procedure if exists BUSCAR_EMPLEADO; 
 delimiter //
 create procedure BUSCAR_EMPLEADO
 (
@@ -294,6 +317,7 @@ begin
     end if;
 end;
 //
+
 drop procedure if exists EDITAR_EMPLEADO;
 delimiter //
 create procedure EDITAR_EMPLEADO
@@ -340,7 +364,7 @@ end;
 -- PROCEDIMIENTOS PROVEEDOR
 drop procedure if exists CREAR_PROVEEDOR;
 delimiter //
-create procedure CREAR_PROVEEDOR
+create procedure CREAR_PROVEEDOR 
 (
 	in _nombre varchar(50),
     in _direccion varchar(300),
@@ -423,17 +447,35 @@ create procedure CREAR_PRODUCTO
 	in _cod_referencia varchar(999),
     in _nombre_producto varchar(50),
     in _descripcion varchar(300),
-    in _stock int,    
+    in _stock int,
+    in _precio decimal(8,2),
     in _fecha_vencimiento datetime,    
     in _rutaImagen varchar(999),
     in _cod_proveedor int
 )
-begin
-	insert into producto(cod_referencia, nombre_producto, descripcion, stock, fecha_vencimiento, rutaImagen, cod_proveedor)
-    values(_cod_referencia, _nombre_producto, _descripcion, _stock, _fecha_vencimiento, _rutaImagen, _cod_proveedor);
-    select 'Registro completo con exito.' mensaje;
+begin	
+	if (_stock > 0) then
+		if (_precio >= 1) then
+			if (date_format( _fecha_vencimiento, '%Y-%m-%d') > date_format(now(), '%Y-%m-%d') ) then
+				insert into producto(cod_referencia, nombre_producto, descripcion, stock, precio, fecha_vencimiento, rutaImagen, cod_proveedor)
+				values(_cod_referencia, _nombre_producto, _descripcion, _stock, _precio, _fecha_vencimiento, _rutaImagen, _cod_proveedor);
+				select 'Registro completo con exito.' mensaje;
+			else
+				if (date_format( _fecha_vencimiento, '%Y-%m-%d') = date_format(now(), '%Y-%m-%d') ) then
+					select 'Parece que hoy se vence el producto y no es posible registrarla' mensaje;
+				else
+					select 'Parece que la fecha ingresada es menor a la fecha actual.' mensaje;
+				end if;
+            end if;			
+		else
+			select 'Le recordamos que el precio minimo es de 1 nuevo sol.' mensaje;
+        end if;
+    else
+		select 'Le recordamos que la minima unidad es 1.' mensaje;
+    end if;	
 end;
 //
+select date_format(now(), '%Y-%m-%d');
 drop procedure if exists LISTAR_PRODUCTOS;
 delimiter //
 create procedure LISTAR_PRODUCTOS()
@@ -463,23 +505,41 @@ create procedure EDITAR_PRODUCTO
 	in _cod_referencia varchar(999),
     in _nombre_producto varchar(50),
     in _descripcion varchar(300),
-    in _stock int,    
+    in _stock int,
+    in _precio decimal(8,2),
     in _fecha_vencimiento datetime,    
     in _rutaImagen varchar(999),
     in _cod_proveedor int
 )
 begin
 	if exists(select * from producto where cod_producto = _cod_producto) then
-		update producto set
-        cod_referencia = _cod_referencia,
-		nombre_producto = _nombre_producto,
-        descripcion = _descripcion,
-        stock = _stock,
-        fecha_vencimiento = _fecha_vencimiento,
-        rutaImagen = _rutaImagen,
-        cod_proveedor = _cod_proveedor
-        where cod_producto = _cod_producto;
-        select 'Registro editado con exito.' mensaje;
+		if (_stock > 0) then
+			if (_precio >= 1) then
+				if (date_format( _fecha_vencimiento, '%Y-%m-%d') > date_format(now(), '%Y-%m-%d') ) then
+					update producto set
+					cod_referencia = _cod_referencia,
+					nombre_producto = _nombre_producto,
+					descripcion = _descripcion,
+					stock = _stock,
+					precio = _precio,
+					fecha_vencimiento = _fecha_vencimiento,
+					rutaImagen = _rutaImagen,
+					cod_proveedor = _cod_proveedor
+					where cod_producto = _cod_producto;
+					select 'Registro editado con exito.' mensaje;
+				else
+					if (date_format( _fecha_vencimiento, '%Y-%m-%d') = date_format(now(), '%Y-%m-%d') ) then
+						select 'Parece que hoy se vence el producto y no es posible editarla. Motivo: no esta permitido vender cosas que se vencen el presente día o menores a el.' mensaje;
+					else
+						select 'Parece que la fecha ingresada es menor a la fecha actual.' mensaje;
+					end if;
+				end if;
+			else
+				select 'Le recordamos que el precio minimo es de 1 nuevo sol.' mensaje;
+			end if;
+		else
+			select 'Le recordamos que la minima unidad es 1.' mensaje;
+		end if;
 	else
 		select 'Parece que el producto no existe sobre la cartelera actual.' mensaje;
     end if;

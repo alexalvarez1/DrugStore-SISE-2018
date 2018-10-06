@@ -30,7 +30,7 @@ if (count($_SESSION) <= 0) {
                                 </a>
                                 <div class="message-body">
                                     <small class="pull-right">JAAC</small>
-                                    <a href="#">
+                                    <a href="#" id="btn_miinformacion">
                                         <strong><i class="fa fa-pencil"></i></strong>
                                         Mi información
                                     </a>
@@ -45,7 +45,7 @@ if (count($_SESSION) <= 0) {
                                 </a>
                                 <div class="message-body">
                                     <small class="pull-right">JAAC</small>
-                                    <a href="#">
+                                    <a href="#" id="btn_cambiarclave">
                                         <strong><i class="fa fa-key"></i></strong>
                                         Cambiar mi clave de acceso
                                     </a>

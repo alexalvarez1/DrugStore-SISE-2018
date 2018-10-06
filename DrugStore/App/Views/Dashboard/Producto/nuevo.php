@@ -46,6 +46,10 @@ $lista_proveedores = ProveedorController::LISTAR_PROVEEDORES();
                             <input name="stock" type="number" data-numero class="form-control" placeholder="Ingrese la cantidad de stock actual del producto" required>
                         </div>
                         <div class="col-sm-6" style="margin-top: 1.8rem;">
+                            <label class="col-form-label-sm">Precio</label>
+                            <input name="precio" type="text" data-precio class="form-control" placeholder="Ingrese el precio del producto" required>
+                        </div>
+                        <div class="col-sm-6" style="margin-top: 1.8rem;">
                             <?php $mes = getdate()["mon"] > 9 ? "0" . getdate()["mon"] : "0" . getdate()["mon"]; ?>
                             <label class="col-form-label-sm">Fecha de vencimiento</label>
                             <input name="fecha_vencimiento" type="date" value="<?php echo (getdate()["year"] - 1) . "-" . $mes . "-" . getdate()["mday"] ?>" class="form-control" required>

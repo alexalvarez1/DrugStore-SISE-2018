@@ -16,6 +16,16 @@ class EmpleadoController extends DataBase {
         echo trim($obj["mensaje"]);
     }
 
+    public static function CAMBIAR_CLAVE($clave, $nueva_clave) {
+        session_start();
+        $obj = self::BUSCAR_EMPLEADO($_SESSION["cod_empleado"], "return");
+        if (trim($obj->mensaje) == "existe") {
+            echo EmpleadoActions::CAMBIAR_CLAVE($obj->cod_empleado, $obj->dni, $clave, $nueva_clave);
+        } else {
+            echo trim($obj->mensaje);
+        }
+    }
+
     public static function CREAR_EMPLEADO(Empleado $empleado) {
         echo EmpleadoActions::CREAR_EMPLEADO($empleado);
     }
@@ -30,10 +40,16 @@ class EmpleadoController extends DataBase {
         }
     }
 
-    public static function BUSCAR_EMPLEADO($cod_empleado) {
+    public static function BUSCAR_EMPLEADO($cod_empleado, $option = "normal") {
         $obj = EmpleadoActions::BUSCAR_EMPLEADO($cod_empleado);
         if (trim($obj->mensaje) == "existe") {
-            require_once './App/Views/Dashboard/Empleado/modal/editar.php';
+            switch ($option) {
+                case "return":
+                    return $obj;
+                default:
+                    require_once './App/Views/Dashboard/Empleado/modal/editar.php';
+                    break;
+            }
         } else {
             echo trim($obj->mensaje);
         }

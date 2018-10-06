@@ -3,12 +3,13 @@
 class ProductoActions {
 
     public static function CREAR_PRODUCTO(Producto $producto) {
-        $sql = "CALL CREAR_PRODUCTO(?,?,?,?,?,?,?)";
+        $sql = "CALL CREAR_PRODUCTO(?,?,?,?,?,?,?,?)";
         $parametros = array(
             $producto->getCod_referencia(),
             $producto->getNombre_producto(),
             $producto->getDescripcion(),
             $producto->getStock(),
+            $producto->getPrecio(),
             $producto->getFecha_vencimiento(),
             $producto->getRutaImagen(),
             $producto->getCod_proveedor()
@@ -28,13 +29,14 @@ class ProductoActions {
     }
 
     public static function EDITAR_PRODUCTO(Producto $producto) {
-        $sql = "CALL EDITAR_PRODUCTO(?,?,?,?,?,?,?,?)";
+        $sql = "CALL EDITAR_PRODUCTO(?,?,?,?,?,?,?,?,?)";
         $parametros = array(
             $producto->getCod_producto(),
             $producto->getCod_referencia(),
             $producto->getNombre_producto(),
             $producto->getDescripcion(),
             $producto->getStock(),
+            $producto->getPrecio(),
             $producto->getFecha_vencimiento(),
             $producto->getRutaImagen(),
             $producto->getCod_proveedor()

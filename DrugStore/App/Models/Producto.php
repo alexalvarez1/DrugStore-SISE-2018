@@ -7,6 +7,7 @@ class Producto extends ProductoActions {
     private $nombre_producto;
     private $descripcion;
     private $stock;
+    private $precio;
     private $fecha_entrada;
     private $fecha_vencimiento;
     private $estado;
@@ -35,6 +36,10 @@ class Producto extends ProductoActions {
 
     public function getStock() {
         return $this->stock;
+    }
+
+    public function getPrecio() {
+        return $this->precio;
     }
 
     public function getFecha_entrada() {
@@ -79,6 +84,11 @@ class Producto extends ProductoActions {
 
     public function setStock($stock) {
         $this->stock = $stock;
+        return $this;
+    }
+
+    public function setPrecio($precio) {
+        $this->precio = $precio;
         return $this;
     }
 

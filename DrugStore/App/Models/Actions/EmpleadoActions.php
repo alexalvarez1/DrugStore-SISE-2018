@@ -8,6 +8,12 @@ class EmpleadoActions {
         return EmpleadoController::query($sql, $parametros, "SELECT");
     }
 
+    public static function CAMBIAR_CLAVE($cod_empleado, $dni, $clave, $nueva_clave) {
+        $sql = "CALL CAMBIAR_CLAVE(?,?,?,?)";
+        $parametros = array($cod_empleado, $dni, $clave, $nueva_clave);
+        return EmpleadoController::query($sql, $parametros, "SELECT")[0]["mensaje"];
+    }
+
     public static function CREAR_EMPLEADO(Empleado $empleado) {
         try {
             $sql = "CALL CREAR_EMPLEADO(?,?,?,?,?,?,?)";

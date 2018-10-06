@@ -46,7 +46,7 @@ $(function () {
             }
         });
     });
-    // vista para editar cliente
+    // vista para editar empleado
     $(document).on("click", "a[data-editar-empleado]", function (e) {
         e.preventDefault();
         var cod_empleado = $(this).parent().parent().parent().find("td:first-child").text().trim();
@@ -85,7 +85,7 @@ $(function () {
                         break;
                     default:
                         // posible entradas
-                        // Parece que el cliente no existe sobre la cartelera actual.
+                        // Parece que el empleado no existe sobre la cartelera actual.
                         // otros
                         swal(PROJECT_NAME + " dice:", data, "warning");
                         break;
@@ -158,6 +158,127 @@ $(function () {
         $(".tabla[" + data_tabla + "] tbody").append(html);
         Paginacion_tabla(data_tabla);
     }
+
+    // SOLO EMPLEADOS
+    // vista para mi informacion personal
+    $("#btn_miinformacion").on("click", function (e) {
+        e.preventDefault();
+        $.ajax({
+            type: 'POST',
+            url: "MiInformacionView",
+            beforeSend: function () {
+                beforesend("cargando datos");
+            },
+            success: function (data) {
+                $("#beforesend").html("");
+                $("#success").html(data);
+                $("#frm_miinformacion_modal").modal();
+            }
+        });
+    });
+    // guardar cambios en mi informacion
+    $(document).on("submit", "#frm_miinformacion", function (e) {
+        e.preventDefault();
+        $.ajax({
+            type: 'POST',
+            data: $(this).serializeArray(),
+            url: "EditarEmpleado",
+            beforeSend: function () {
+                beforesend("cargando datos");
+            },
+            success: function (data) {
+                $("#beforesend").html("");
+                switch (data.trim()) {
+                    case "Registro editado con exito.":
+                        swal(PROJECT_NAME + " dice:", data, "success").then(() => {
+                            $("#frm_miinformacion_modal").modal("hide");
+                            // aqui no es necesario, pero si se encuentra dentro de la cartelera, tambien
+                            // lo actualizamos.
+                            CargarEmpleados();
+                        });
+                        break;
+                    default:
+                        // posible entradas
+                        // Parece que el empleado no existe sobre la cartelera actual.
+                        // otros
+                        swal(PROJECT_NAME + " dice:", data, "warning");
+                        break;
+                }
+            }
+        });
+    });
+
+// vista para cambiar mi clave
+    $("#btn_cambiarclave").on("click", function (e) {
+        e.preventDefault();
+        $.ajax({
+            type: 'POST',
+            url: "CambiarMiClaveView",
+            beforeSend: function () {
+                beforesend("cargando datos");
+            },
+            success: function (data) {
+                $("#beforesend").html("");
+                $("#success").html(data);
+                $("#frm_cambiarclave_modal").modal();
+            }
+        });
+    });
+
+// cambiar mi clave
+    $(document).on("submit", "#frm_cambiarclave", function (e) {
+        e.preventDefault();
+        var bandera = true;
+        if ($("#frm_cambiarclave input[name='nueva_clave']").val() !== $("#frm_cambiarclave input[name='confirmar_clave']").val()) {
+            swal(PROJECT_NAME + " dice:", "Parece que la constraseñas no coinciden, Por favor revise los campos.", "warning").then(() => {
+                $("#frm_cambiarclave input[name='confirmar_clave']").focus();
+            });
+            return false;
+        }
+        $(this).find("input").each(function () {
+            if ($(this).val().trim() === "") {
+                swal(PROJECT_NAME + " dice:", "No puede dejar espacios vacios, por favor completo todo los espacios en blancos.", "warning");
+                bandera = false;
+                return false;
+            }
+        });
+        if (bandera === true) {
+            $.ajax({
+                type: 'POST',
+                data: $(this).serializeArray(),
+                url: "CambiarMiClave",
+                beforeSend: function () {
+                    beforesend("cargando datos");
+                },
+                success: function (data) {
+                    $("#beforesend").html("");
+                    switch (data.trim()) {
+                        case "No hemos actualizado tu clave, por que la nueva clave, es igual a la actual.":
+                        case "Tu clave ha sido cambiada con exito.":
+                            swal(PROJECT_NAME + " dice:", data, "success").then(() => {
+                                $("#frm_cambiarclave_modal").modal("hide");
+                                // aqui no es necesario, pero si se encuentra dentro de la cartelera, tambien
+                                // lo actualizamos.
+                                CargarEmpleados();
+                            });
+                            break;
+                        case "Su nueva clave debe ser mayor o igual que 5 caracteres.":
+                            swal(PROJECT_NAME + " dice:", data, "warning").then(() => {
+                               $("#frm_cambiarclave input[name='nueva_clave']").focus();
+                            });
+                            break;
+                        default:
+                            // posible entradas
+                            // La clave actual no es correcta. Asegurate que esté bien escrito.
+                            // Parece que el empleado no existe.
+                            // otros
+                            swal(PROJECT_NAME + " dice:", data, "warning");
+                            break;
+                    }
+                }
+            });
+        }
+    });
 
 });
 
